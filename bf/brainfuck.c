@@ -1,15 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NOOP 0
-#define MOVE_RIGHT 1
-#define MOVE_LEFT 2
-#define INCREMENT 3
-#define DECREMENT 4
-#define OUTPUT 5
-#define INPUT 6
-#define ENTER 7
-#define JUMP 
+#include "bf.h"
 
 void execute(int* tape, int* cell_pointer, int next_instruction)
 {
@@ -67,6 +59,7 @@ void fetch(char* program, int program_counter, int* next_instruction)
             break;
     }
 }
+
 void get_program(char* path, char* buffer, int* size)
 {
     FILE* file = fopen(path, "rb");
@@ -82,28 +75,4 @@ void get_program(char* path, char* buffer, int* size)
         *size = i;
     }
     fclose(file);
-}
-
-// "Brainfuck leaves a lot of things up to the implementation to decide, such as array and cell size, and what happens when EOF is read. "
-
-int main(int argc, char *argv[])
-{
-    int* tape = calloc(30000, sizeof(int));
-    char program[10000];
-    int program_size;
-
-    int cell_pointer = 0;
-    int next_instruction    = NOOP;
-
-    get_program("test.bf", program, &program_size);
-    
-    for( int pc = 0; pc < program_size; pc++ )
-    {
-
-        fetch(program, pc, &next_instruction);
-
-        execute(tape, &cell_pointer, next_instruction);
-    }
-
-    return(0);
 }
